@@ -9,4 +9,5 @@ checkChar :: String -> Int -> Bool
 checkChar input x
     | x == 0 = input !! x == '*' && input !! (x + 1) == '*'
     | x == length input - 1 = input !! x == '*' && input !! (x - 1) == '*'
-    | otherwise = input !! x == '*' && (input !! (x + 1) == '*' || input !! (x - 1) == '*')
+    | otherwise = input !! x == '*' && 
+        (input !! (x + 1) == '*' || input !! (x - 1) == '*')
