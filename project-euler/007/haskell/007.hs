@@ -1,5 +1,5 @@
-getNthPrim :: Int -> Int
-getNthPrim x = [y | y <- [2..], isPrime y] !! (x - 1)
+getNthPrime :: Int -> Int
+getNthPrime x = [y | y <- [2..], isPrime y] !! (x - 1)
 
 isPrime :: Int -> Bool
 isPrime x 
