@@ -1,10 +1,7 @@
 import           Data.List
 
 main :: IO ()
-main = do 
-    content <- readFile ("input.txt")
-    let linesOfFile = lines content
-    print $ howManyAreValid linesOfFile
+main = readFile ("input.txt") >>= print . howManyAreValid . lines
 
 
 howManyAreValid :: [String] -> Int 
@@ -13,9 +10,7 @@ howManyAreValid linesOfFile =
 
 
 isUnique :: [String] -> Bool 
-isUnique line =  do
-    let uniqueLine = makeUnique line
-    uniqueLine == line
+isUnique line = line == makeUnique line
 
-
+makeUnique :: [String] -> [String]
 makeUnique = reverse . nub . reverse
