@@ -3,9 +3,9 @@ module Lib
     , removeEmptyLines
     , removePlus
     , giveFirstDuplicateFrequency
-    , giveFirstDuplicateFrequencyRepeater
-    , giveFirstDuplicateFrequencyHelper
     ) where
+
+import qualified Data.Set as Set  
 
 convertStringListToIntList :: [String] -> [Int]
 convertStringListToIntList = map (read :: String -> Int)
@@ -19,21 +19,9 @@ removeEmptyLines = filter (\line -> length line > 0)
 
 -- Part two
 giveFirstDuplicateFrequency :: [Int] -> Int
-giveFirstDuplicateFrequency frequencyChanges = giveFirstDuplicateFrequencyRepeater frequencyChanges 1
+giveFirstDuplicateFrequency frequencyChanges = findFirstDuplicate (scanl (+) 0 $ cycle frequencyChanges) Set.empty
 
-giveFirstDuplicateFrequencyRepeater :: [Int] -> Int -> Int
-giveFirstDuplicateFrequencyRepeater frequencyChanges run 
-  | snd $ calculated = last $ fst  calculated
-  | otherwise = giveFirstDuplicateFrequencyRepeater frequencyChanges $ run + 1
-    where
-        calculated = giveFirstDuplicateFrequencyHelper $ concat $ replicate run frequencyChanges
- 
-giveFirstDuplicateFrequencyHelper :: [Int] -> ([Int], Bool)
-giveFirstDuplicateFrequencyHelper = 
-    foldl(\acc curr -> if (snd acc) then 
-        acc 
-    else if (elem ((last $ fst acc) + curr) $ fst acc) then 
-        (fst acc ++ [(last $ fst acc) + curr], True)
-    else 
-        (fst acc ++ [(last $ fst acc) + curr], False)) 
-    ([0], False)
+findFirstDuplicate :: [Int] -> Set.Set Int -> Int
+findFirstDuplicate (x:xs) s 
+  | Set.member x s = x
+  | otherwise = findFirstDuplicate xs $ Set.insert x s
