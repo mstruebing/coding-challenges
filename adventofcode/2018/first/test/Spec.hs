@@ -43,3 +43,15 @@ main = hspec $ do
             convertStringListToIntList [] `shouldBe` []
         it "should convert [Int] to [String]" $
             convertStringListToIntList ["1", "2", "-3"] `shouldBe` [1, 2, -3]
+
+    describe "Lib.giveFirstDuplicateFrequency" $ do
+        it "+1, -1 first reaches 0 twice" $
+            giveFirstDuplicateFrequency [1, -1] `shouldBe` 0
+        it "+1, -2, +3, +1 first reaches 2 twice" $
+            giveFirstDuplicateFrequency [1, -2, 3, 1, 1, -2] `shouldBe` 2
+        it "+3, +3, +4, -2, -4 first reaches 10 twice" $
+            giveFirstDuplicateFrequency [3, 3, 4, -2, -4] `shouldBe` 10
+        it "-6, +3, +8, +5, -6 first reaches 5 twice" $
+            giveFirstDuplicateFrequency [-6, 3, 8, 5, -6] `shouldBe` 5
+        it "+7, +7, -2, -7, -4 first reaches 14 twice" $
+            giveFirstDuplicateFrequency [7, 7, -2, -7, -4] `shouldBe` 14
