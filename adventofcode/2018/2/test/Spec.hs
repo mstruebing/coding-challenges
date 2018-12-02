@@ -6,38 +6,6 @@ import Lib
 
 main :: IO ()
 main = hspec $ do 
-    describe "Lib.lettersOccurTwoTimes" $ do
-        it "abcdef doesn't conain any char two times" $
-            lettersOccurTwoTimes "abcdef" `shouldBe` False
-        it "bababc conains a char two times" $
-            lettersOccurTwoTimes "bababc" `shouldBe` True
-        it "abbcde conains a char two times" $
-            lettersOccurTwoTimes "abbcde" `shouldBe` True
-        it "abcccd doesn't conain any char two times" $
-            lettersOccurTwoTimes "abcccd" `shouldBe` False
-        it "aabcdd conains a char two times" $
-            lettersOccurTwoTimes "aabcdd" `shouldBe` True
-        it "abcdee conains a char two times" $
-            lettersOccurTwoTimes "abcdee" `shouldBe` True
-        it "ababab doens't conain any char two times" $
-            lettersOccurTwoTimes "ababab" `shouldBe` False
-
-    describe "Lib.lettersOccurThreeTimes" $ do
-        it "abcdef doesn't conain any char three times" $
-            lettersOccurThreeTimes "abcdef" `shouldBe` False
-        it "bababc contains a char three times" $
-            lettersOccurThreeTimes "bababc" `shouldBe` True
-        it "abbcde doesn't conains a char three times" $
-            lettersOccurThreeTimes "abbcde" `shouldBe` False
-        it "abcccd conains a char three times" $
-            lettersOccurThreeTimes "abcccd" `shouldBe` True
-        it "aabcdd doesn't contain a char three times" $
-            lettersOccurThreeTimes "aabcdd" `shouldBe` False
-        it "abcdee doesn't conains a char three times" $
-            lettersOccurThreeTimes "abcdee" `shouldBe` False
-        it "ababab conains a char three times" $
-            lettersOccurThreeTimes "ababab" `shouldBe` True
-
     describe "Lib.lettersOccurNTimes" $ do
         it "abcdef doesn't conain any char three times" $
             lettersOccurNTimes 3 "abcdef" `shouldBe` False
@@ -89,3 +57,23 @@ main = hspec $ do
             getMultiplesOfBoxIds ["aaabbb", "bbbaaa"] `shouldBe` (0, 2)
         it "" $
             getMultiplesOfBoxIds ["abc", "def"] `shouldBe` (0, 0)
+
+    describe "Lib.differByOnlyOneChar" $ do
+        it "" $
+            differByOnlyOneChar "abc" "abc" `shouldBe` False
+        it "" $
+            differByOnlyOneChar "abc" "abd" `shouldBe` True
+        it "" $
+            differByOnlyOneChar "bbc" "abd" `shouldBe` False
+        it "" $
+            differByOnlyOneChar "abcde" "axcye" `shouldBe` False
+        it "" $
+            differByOnlyOneChar "fghij" "fguij" `shouldBe` True
+
+    describe "Lib.getCommonChars" $ do
+        it "" $
+            getCommonChars "abc" "abc" "" `shouldBe` "abc"
+        it "" $
+            getCommonChars "abcd" "abc" "" `shouldBe` "abc"
+        it "" $
+            getCommonChars "dbcd" "abc" "" `shouldBe` "bc"

@@ -1,16 +1,19 @@
 module Lib
-    ( someFunc
-    , lettersOccurTwoTimes
-    , lettersOccurThreeTimes
-    , lettersOccurNTimes
+    ( lettersOccurNTimes
     , getMultiplesOfBoxIds
     , getMultiplesOfBoxIdsHelper
+    , calcChecksum
+    , findPrototypeFabric
+    , differByOnlyOneChar
+    , getCommonChars
     ) where
 
 import Data.List
 
-someFunc :: [String] -> Int
-someFunc boxIds = twoOccurences * threeOccurences
+-- neded for part one
+
+calcChecksum :: [String] -> Int
+calcChecksum boxIds = twoOccurences * threeOccurences
     where
         twoOccurences = fst $ getMultiplesOfBoxIds boxIds
         threeOccurences = snd $ getMultiplesOfBoxIds boxIds
@@ -34,10 +37,26 @@ countLetters str c = length $ filter (== c) str
 makeUnique :: String -> String
 makeUnique = reverse . nub . reverse
 
--- Just for historical reasons :)
--- lettersOccurNTimes emerged from them
-lettersOccurTwoTimes :: String -> Bool
-lettersOccurTwoTimes boxId = any (== True) [ countLetters boxId c == 2 | c <- boxId ]
+-- needed for part two
 
-lettersOccurThreeTimes :: String -> Bool
-lettersOccurThreeTimes boxId = any (== True) [ countLetters boxId c == 3 | c <- boxId ]
+findPrototypeFabric :: [String] -> String
+findPrototypeFabric xs = stuff $ foldr (\curr acc -> acc ++ (filter (\i -> differByOnlyOneChar i curr) xs )) [""] xs
+    where
+        stuff x = getCommonChars (x !! 1) (x !! 2) ""
+
+getCommonChars :: String -> String -> String -> String
+getCommonChars (x:xs) (y:ys) memorized 
+  | (x:xs) == [x] || (y:ys) == [y] = if x == y then memorized ++ [x] else memorized
+  | x == y = getCommonChars xs ys $ memorized ++ [x]
+  | otherwise = getCommonChars xs ys memorized
+
+
+differByOnlyOneChar :: String -> String -> Bool
+differByOnlyOneChar xs ys = 1 == (length $ filter (== False) $ zipWith (==) xs ys)
+
+-- internal
+
+getRemaingList :: [String] -> String -> [String]
+getRemaingList xs elem
+  | xs == [] = []
+  | otherwise = tail $ dropWhile (\x -> x /= elem) xs
