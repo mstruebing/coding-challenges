@@ -21,9 +21,9 @@ firstPart = do
 
 secondPart :: IO ()
 secondPart = do
+    -- file <- readFile "smallinput.txt"
     file <- readFile "input.txt"
     let guardData = initGuardData Map.empty 0 $ sort $ lines file
     let calculated = Map.map findMostAsleepMinuteForAllGuards guardData
-    let most = foldr (\curr acc -> if snd curr > snd acc then curr else acc) (0, (0, 0)) $ Map.toList calculated
+    let most = foldr (\curr acc -> if (snd $ snd curr) > (snd $ snd acc) then curr else acc) (0, (0, 0)) $ Map.toList calculated
     print ((fst most) * (fst $ snd most))
-    
