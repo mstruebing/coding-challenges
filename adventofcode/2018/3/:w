@@ -1,0 +1,36 @@
+module Lib
+    ( someFunc
+    , getHeight
+    , getWidth
+    , getSize
+    ) where
+
+import Data.Maybe
+import Data.List
+
+someFunc :: IO ()
+someFunc = putStrLn "someFunc"
+
+-- #11 @ 49,318: 25x25
+
+getSize :: String -> (Int, Int)
+getSize input = (first, second)
+    where
+        first = read (fst stringCoordsTuple) :: Int
+        second = read (drop 1 $ snd stringCoordsTuple) :: Int
+        stringCoordsTuple = splitAt (fromJust $ elemIndex 'x' stringCoords) stringCoords
+        stringCoords = drop 2 $ dropWhile (/= ':') input
+
+getStartingPoint :: String -> (Int, Int)
+getStartingPoint input = (first, second)
+    where
+        first = read (fst stringCoords) :: Int
+        second = read (drop 1 $ snd stringCoordsTuple) :: Int
+        stringCoordsTuple = splitAt (fromJust $ elemIndex 'x' stringCoords) stringCoords
+        stringCoords = takeWhile (/= ':') $ drop 1 $ dropWhile (/= '@') input
+
+getWidth :: String -> Int
+getWidth input = 1
+
+getHeight :: String -> Int
+getHeight input = 1
