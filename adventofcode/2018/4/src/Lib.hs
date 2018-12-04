@@ -1,7 +1,8 @@
 module Lib
     ( initGuardData
     , findMostSleepingGuard
-    , findMostAsleepMinute
+    , findMostAsleepMinuteForSingleGuard
+    , findMostAsleepMinuteForAllGuards
     ) where
 
 import qualified Data.Map as Map
@@ -19,8 +20,27 @@ wakesUpString = "wakes up"
 beginsShiftString :: String
 beginsShiftString = "begins shift"
 
-findMostAsleepMinute :: SingleGuard -> Int
-findMostAsleepMinute = fst . foldr (\curr acc -> if snd curr > snd acc then curr else acc) (0, 0) . reverse . map (\i -> (head i, length i)) . group .sort . concat . map (\i -> [fst i .. snd i - 1]) . snd
+findMostAsleepMinuteForSingleGuard :: SingleGuard -> Int
+findMostAsleepMinuteForSingleGuard = 
+    fst 
+    .  foldr (\curr acc -> if snd curr > snd acc then curr else acc) (0, 0) 
+    . reverse 
+    . map (\i -> (head i, length i)) 
+    . group 
+    . sort 
+    . concat 
+    . map (\i -> [fst i .. snd i - 1]) 
+    . snd
+
+findMostAsleepMinuteForAllGuards guardData = 
+    id 
+    $ foldr (\curr acc -> if snd curr > snd acc then curr else acc) (0, 0)
+    $ map (\i -> (head i, length i))
+    $ group 
+    $ sort 
+    $ concat 
+    $ map (\i -> [fst i .. snd i - 1]) 
+    guardData
 
 findMostSleepingGuard :: GuardData -> SingleGuard
 findMostSleepingGuard guardData = head $ filter (\guard -> fst guard == mostSleepingGuardNr) $ Map.toList guardData
