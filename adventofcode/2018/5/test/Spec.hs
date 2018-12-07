@@ -17,3 +17,6 @@ main = hspec $ do
             reduceOppositePolarityOfSameType "aabAAB" `shouldBe` "aabAAB"
         it "" $
             reduceOppositePolarityOfSameType "dabAcCaCBAcCcaDA" `shouldBe` "dabCBAcaDA"
+    describe "Lib.reduceOppositePolarityOfSameType" $ do
+        it "" $
+            (reduceByRemovingMostBlockingUnit $ reduceOppositePolarityOfSameType "dabAcCaCBAcCcaDA") `shouldBe` length "daDA"
