@@ -8,6 +8,10 @@ enum OpCode {
     Save,
     Output,
     Halt,
+    JumpIfTrue,
+    JumpIfFalse,
+    LessThan,
+    Equals,
     Invalid,
 }
 
@@ -20,7 +24,8 @@ enum Mode {
 
 fn main() {
     let input = parse_input(&read_input());
-    part_one(input);
+    part_one(input.clone());
+    part_two(input);
 }
 
 fn part_one(original_input: Vec<i32>) {
@@ -90,7 +95,178 @@ fn part_one(original_input: Vec<i32>) {
                 instruction_pointer = instruction_pointer + 2;
             }
             OpCode::Halt => return,
-            OpCode::Invalid => return,
+            _ => return,
+        }
+    }
+}
+
+fn part_two(original_input: Vec<i32>) {
+    let mut input = original_input.clone();
+    let mut instruction_pointer: usize = 0;
+
+    for _ in 0..input.len() - 1 {
+        if instruction_pointer > input.len() - 1 {
+            break;
+        }
+
+        let opcode = get_opcode(input[instruction_pointer]);
+
+        match opcode {
+            OpCode::Save => {
+                let number = get_input();
+                let target_position = input[instruction_pointer + 1];
+                input[target_position as usize] = number;
+                instruction_pointer = instruction_pointer + 2;
+            }
+            OpCode::Add => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_mode_two = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = input[instruction_pointer + 3];
+
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let argument_two = match argument_mode_two {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                let result = argument_one + argument_two;
+
+                input[target_position as usize] = result;
+                instruction_pointer = instruction_pointer + 4;
+            }
+            OpCode::Multiply => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_mode_two = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = input[instruction_pointer + 3];
+
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let argument_two = match argument_mode_two {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                let result = argument_one * argument_two;
+
+                input[target_position as usize] = result;
+                instruction_pointer = instruction_pointer + 4;
+            }
+            OpCode::JumpIfTrue => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let target_mode = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = match target_mode {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                if argument_one != 0 {
+                    instruction_pointer = target_position as usize;
+                } else {
+                    instruction_pointer = instruction_pointer + 3;
+                }
+            }
+            OpCode::JumpIfFalse => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let target_mode = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = match target_mode {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                if argument_one == 0 {
+                    instruction_pointer = target_position as usize;
+                } else {
+                    instruction_pointer = instruction_pointer + 3;
+                }
+            }
+            OpCode::LessThan => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_mode_two = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = input[instruction_pointer + 3];
+
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let argument_two = match argument_mode_two {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                if argument_one < argument_two {
+                    input[target_position as usize] = 1;
+                } else {
+                    input[target_position as usize] = 0;
+                }
+
+                instruction_pointer = instruction_pointer + 4;
+            }
+            OpCode::Equals => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_mode_two = get_argument_mode(input[instruction_pointer], 1);
+                let target_position = input[instruction_pointer + 3];
+
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                let argument_two = match argument_mode_two {
+                    Mode::Position => input[input[instruction_pointer + 2] as usize],
+                    Mode::Immediate => input[instruction_pointer + 2],
+                    Mode::Invalid => return,
+                };
+
+                if argument_one == argument_two {
+                    input[target_position as usize] = 1;
+                } else {
+                    input[target_position as usize] = 0;
+                }
+
+                instruction_pointer = instruction_pointer + 4;
+            }
+            OpCode::Output => {
+                let argument_mode_one = get_argument_mode(input[instruction_pointer], 0);
+                let argument_one = match argument_mode_one {
+                    Mode::Position => input[input[instruction_pointer + 1] as usize],
+                    Mode::Immediate => input[instruction_pointer + 1],
+                    Mode::Invalid => return,
+                };
+
+                println!("{}", argument_one);
+                instruction_pointer = instruction_pointer + 2;
+            }
+            OpCode::Halt => return,
+            _ => return,
         }
     }
 }
@@ -119,6 +295,10 @@ fn get_opcode(instruction: i32) -> OpCode {
             2 => return OpCode::Multiply,
             3 => return OpCode::Save,
             4 => return OpCode::Output,
+            5 => return OpCode::JumpIfTrue,
+            6 => return OpCode::JumpIfFalse,
+            7 => return OpCode::LessThan,
+            8 => return OpCode::Equals,
             _ => return OpCode::Invalid,
         }
     }
@@ -138,6 +318,10 @@ fn get_opcode(instruction: i32) -> OpCode {
         02 => OpCode::Multiply,
         03 => OpCode::Save,
         04 => OpCode::Output,
+        05 => OpCode::JumpIfTrue,
+        06 => OpCode::JumpIfFalse,
+        07 => OpCode::LessThan,
+        08 => OpCode::Equals,
         99 => OpCode::Halt,
         _ => OpCode::Invalid,
     }
@@ -196,6 +380,8 @@ mod tests {
         assert_eq!(get_opcode(1299), OpCode::Halt);
         assert_eq!(get_opcode(3), OpCode::Save);
         assert_eq!(get_opcode(1), OpCode::Add);
+        assert_eq!(get_opcode(8), OpCode::Equals);
+        assert_eq!(get_opcode(1008), OpCode::Equals);
     }
 
     #[test]
