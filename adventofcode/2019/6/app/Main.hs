@@ -11,15 +11,30 @@ tree_origin :: Tree String
 tree_origin = Node "COM" []
 
 main :: IO ()
-main = print 
-    .calc
+main = do
+    part_one
+    part_two
+
+part_two :: IO ()
+part_two = print 
+    . levels 
+    . createTree 
+    . parse 
+      =<< readFile "input2.txt"
+
+part_one :: IO ()
+part_one = print 
+    . sum
+    . calc
     . levels 
     . createTree 
     . parse 
       =<< readFile "input.txt"
 
-calc :: [[String]] -> Int
-calc input = sum $ map (\(x,y) -> x * y) $ map (\x -> (fromJust $ elemIndex x input , length x)) input
+calc :: [[String]] -> [Int]
+calc input = map (\x -> fst (run x) * snd (run x)) input
+    where
+        run x = (fromJust $ elemIndex x input , length x)
 
 createTree :: [(String, String)] -> Tree String
 createTree input = 
