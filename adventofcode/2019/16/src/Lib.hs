@@ -31,7 +31,6 @@ calcSingleRow input pattern =
     getLastDigit . abs . sum $ 
     zipWith (*) input offsetPattern
         where
-            outputList = zipWith (*) input offsetPattern
             offsetPattern = drop 1 $ cycle pattern
 
 calcPhase :: [Integer] -> [Integer]

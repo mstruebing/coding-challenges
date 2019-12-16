@@ -2,19 +2,28 @@ module Main where
 
 import Lib
 
+import Data.Digits (digits, unDigits)
+
 main :: IO ()
 main = do
     -- partOne
     partTwo
 
-partTwo :: IO ()
-partTwo = print . parse . repeatInput 1000 =<< getInput
-
 partOne :: IO ()
-partOne = print . take 8 . Lib.calcPhases 100 . read =<< getInput
+partOne = print . take 8 . Lib.calcPhases 100 . parse =<< getInput
+
+partTwo :: IO ()
+partTwo = do
+    input <- getInput
+    let repeatedInput = parse $ repeatInput 10000 input
+    let offset = read (take 7 input)::Int
+    let result = Lib.calcPhases 100 repeatedInput
+    let final = take 8 $ drop offset result
+    putStrLn $ show final
+
 
 getInput :: IO String
-getInput = readFile "input.txt"
+getInput = readFile "input1.txt"
 
 repeatInput :: Int -> String -> String
 repeatInput repeat input = take (repeat * length trimmedInput) (cycle trimmedInput)
