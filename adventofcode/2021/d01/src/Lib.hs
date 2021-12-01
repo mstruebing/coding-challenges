@@ -1,21 +1,30 @@
 module Lib
-    ( getInput
-    , calc
-    , slice
-    , sumSlices
-    ) where
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+  ( getInput,
+    calc,
+    slice,
+    sumSlices,
+  )
+where
 
 getInput :: IO String
 getInput = readFile "input.txt"
 
 calc :: [Int] -> Int
-calc =  fst . foldr (\curr acc -> if curr < snd acc then (fst acc + 1, curr) else (fst acc, curr) ) (0, 0)
+calc =
+  fst
+    . foldr
+      ( \currentDepth (increases, previousDepth) ->
+          if currentDepth < previousDepth
+            then (increases + 1, currentDepth)
+            else (increases, currentDepth)
+      )
+      (0, 0)
 
 slice :: [Int] -> [[Int]]
-slice input =  map (\index -> [input !! index, input !! (index + 1), input !! (index + 2)]) [0 .. (length input - 3)] 
+slice input =
+  map
+    (\index -> take 3 $ drop index input)
+    [0 .. (length input - 3)]
 
 sumSlices :: [[Int]] -> [Int]
 sumSlices = map sum
