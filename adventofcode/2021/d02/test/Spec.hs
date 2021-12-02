@@ -29,3 +29,6 @@ main = hspec $ do
       Lib.parse "forward 2" `shouldBe` (Forward, 2)
     it "Should calc correct Postion" $
       Lib.calc (0, 0) (map Lib.parse input) `shouldBe` (15, 10)
+  describe "Part 2" $ do
+    it "Should calc correct Postion" $
+      Lib.calc2 (0, 0, 0) (map Lib.parse input) `shouldBe` (15, 60, 10)
