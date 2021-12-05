@@ -25,12 +25,16 @@ type Board = [Row]
 getInput :: IO String
 getInput = readFile "input.txt"
 
--- TODO: Implement
--- for every instruction calculate the new boards, check if one has won
--- if won, get unmarked sum and multiply by last used instruction
--- else continute with next construction
 play :: Instructions -> [Board] -> Int
 play instructions boards = if hasWinningBoard > 0 then getUnmarkedSum (head getWinningBoard) * instruction else play (tail instructions) newBoards
+  where
+    hasWinningBoard = length getWinningBoard
+    getWinningBoard = filter hasWon newBoards
+    newBoards = map (\board -> set board instruction) boards
+    instruction = head instructions
+
+play2 :: Instructions -> [Board] -> Int
+play2 instructions boards = if hasWinningBoard > 0 then getUnmarkedSum (head getWinningBoard) * instruction else play (tail instructions) newBoards
   where
     hasWinningBoard = length getWinningBoard
     getWinningBoard = filter hasWon newBoards
