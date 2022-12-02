@@ -1,0 +1,8 @@
+packages:
+  - .
+resolver:
+  compiler: ghc-9.2.4
+system-ghc: true
+
+extra-deps:
+  - split-0.2.3.5
