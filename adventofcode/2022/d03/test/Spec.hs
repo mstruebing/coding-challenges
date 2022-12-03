@@ -1,4 +1,4 @@
-import Lib (findDuplicate, first, getItemPriority, splitInHalf)
+import Lib (findDuplicate, findDuplicateBadges, first, getItemPriority, splitForEleves, splitInHalf)
 import Test.Hspec
 import Test.QuickCheck
 
@@ -45,3 +45,11 @@ main = hspec $ do
       (getItemPriority 's') `shouldBe` 19
     it "first" $
       first input `shouldBe` 157
+    it "split" $
+      splitForEleves
+        input
+        `shouldBe` [("vJrwpWtwJgWrhcsFMMfFFhFp", "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL", "PmmdzqPrVvPwwTWBwg"), ("wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn", "ttgJtRGJQctTZtZT", "CrZsJsPPZsGzwwsLwLmpwMDw")]
+    it "findDuplicateBadges.0" $
+      findDuplicateBadges (splitForEleves input !! 0) `shouldBe` 'r'
+    it "findDuplicateBadges.1" $
+      findDuplicateBadges (splitForEleves input !! 1) `shouldBe` 'Z'
