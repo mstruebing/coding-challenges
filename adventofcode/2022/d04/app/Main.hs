@@ -13,4 +13,4 @@ part1 :: IO ()
 part1 = print . Lib.first . parse . lines =<< readFile "input.txt"
 
 part2 :: IO ()
-part2 = print 1
+part2 = print . Lib.second . parse . lines =<< readFile "input.txt"

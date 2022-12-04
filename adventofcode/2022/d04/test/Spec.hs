@@ -53,3 +53,19 @@ main = hspec $ do
   describe "Lib.first" $ do
     it "1" $
       Lib.first (parse input) `shouldBe` 2
+  describe "Lib.containsEachOther" $ do
+    it "1" $
+      Lib.containsEachOther ([2 .. 4], [6 .. 8]) `shouldBe` False
+    it "2" $
+      Lib.containsEachOther ([2, 3], [4, 5]) `shouldBe` False
+    it "3" $
+      Lib.containsEachOther ([5 .. 7], [7 .. 9]) `shouldBe` True
+    it "4" $
+      Lib.containsEachOther ([2 .. 8], [3 .. 7]) `shouldBe` True
+    it "5" $
+      Lib.containsEachOther ([6], [4 .. 6]) `shouldBe` True
+    it "6" $
+      Lib.containsEachOther ([2 .. 6], [4 .. 8]) `shouldBe` True
+  describe "Lib.second" $ do
+    it "1" $
+      Lib.second (parse input) `shouldBe` 4

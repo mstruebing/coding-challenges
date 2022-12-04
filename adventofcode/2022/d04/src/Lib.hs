@@ -5,8 +5,12 @@ module Lib
     parse,
     isSubset,
     first,
+    second,
+    containsEachOther,
   )
 where
+
+import Data.List (intersect)
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
@@ -42,3 +46,13 @@ isSubset (fst, snd) = firstSubsetOfSecond || secondSubsetOfFirst
     firstLast = last fst
     secondFirst = head snd
     secondLast = last snd
+
+------------------------------
+-- Part 2
+------------------------------
+
+second :: [Assignments] -> Int
+second assignments = length $ filter (== True) $ map containsEachOthe assignments
+
+containsEachOther :: Assignments -> Bool
+containsEachOther (fst, snd) = length (intersect fst snd) > 0
