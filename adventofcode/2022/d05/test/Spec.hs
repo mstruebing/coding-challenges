@@ -78,3 +78,6 @@ main = hspec $ do
   describe "first" $ do
     it "1" $
       first (parse rawInput) `shouldBe` "CMZ"
+  describe "second" $ do
+    it "1" $
+      second (parse rawInput) `shouldBe` "MCD"

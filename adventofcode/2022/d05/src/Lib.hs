@@ -7,11 +7,12 @@ module Lib
     parseShip,
     getFirstCrates,
     first,
+    second,
   )
 where
 
 import Data.Char
-import Data.List (elemIndex)
+import Data.List (elemIndex, foldl')
 import Data.List.Split (chunksOf)
 import Data.Map (Map, assocs, findWithDefault, fromList, insert)
 import Data.Maybe (fromJust)
@@ -29,7 +30,7 @@ someFunc :: IO ()
 someFunc = putStrLn "someFunc"
 
 first :: (Ship, [Move]) -> String
-first (ship, moves) = getFirstCrates $ foldl move ship moves
+first (ship, moves) = getFirstCrates $ foldl' move ship moves
 
 move :: Ship -> Move -> Ship
 move ship (amount, from, to) = insert from newStackFrom $ insert to newStackTo ship
@@ -67,3 +68,18 @@ parse input = (ship, moves)
     rawShip = take dividerIndex input
     rawMoves = drop (dividerIndex + 1) input
     dividerIndex = fromJust $ elemIndex "" input
+
+------------------------------
+-- Part 2
+------------------------------
+
+second :: (Ship, [Move]) -> String
+second (ship, moves) = getFirstCrates $ foldl' move' ship moves
+
+move' :: Ship -> Move -> Ship
+move' ship (amount, from, to) = insert from newStackFrom $ insert to newStackTo ship
+  where
+    newStackTo = take amount stackFrom ++ stackTo
+    newStackFrom = drop amount stackFrom
+    stackFrom = findWithDefault [] from ship
+    stackTo = findWithDefault [] to ship
