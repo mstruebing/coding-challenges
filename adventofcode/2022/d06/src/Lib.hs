@@ -1,8 +1,8 @@
 module Lib
   ( someFunc,
     allCharsDifferent,
-    findFirstMarker,
-    getFourCharsAtIndex,
+    findPacketMarker,
+    findStartOfMessageMarker,
   )
 where
 
@@ -13,14 +13,30 @@ import Data.Set (fromList, size)
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
 
-findFirstMarker :: String -> Int
-findFirstMarker input = fromJust (findIndex (isMarker input) [0 .. length input - 1]) + 4
+messageMarkerChars :: Int
+messageMarkerChars = 14
 
-isMarker :: String -> Int -> Bool
-isMarker input index = allCharsDifferent $ getFourCharsAtIndex input index
+packetMarkerChars :: Int
+packetMarkerChars = 4
 
-getFourCharsAtIndex :: String -> Int -> String
-getFourCharsAtIndex input index = take 4 $ drop index input
+findPacketMarker :: String -> Int
+findPacketMarker input = fromJust (findIndex (isPacketMarker input) [0 .. length input - 1]) + packetMarkerChars
+
+isPacketMarker :: String -> Int -> Bool
+isPacketMarker input index = allCharsDifferent $ getChars index
+  where
+    getChars = getCharsAtIndex packetMarkerChars input
+
+findStartOfMessageMarker :: String -> Int
+findStartOfMessageMarker input = fromJust (findIndex (isStartOfMessageMarker input) [0 .. length input - 1]) + messageMarkerChars
+
+isStartOfMessageMarker :: String -> Int -> Bool
+isStartOfMessageMarker input index = allCharsDifferent $ getChars index
+  where
+    getChars = getCharsAtIndex messageMarkerChars input
+
+getCharsAtIndex :: Int -> String -> Int -> String
+getCharsAtIndex amount input index = take amount $ drop index input
 
 allCharsDifferent :: String -> Bool
 allCharsDifferent input = length input == size (fromList input)

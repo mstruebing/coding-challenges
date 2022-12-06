@@ -12,17 +12,23 @@ main = hspec $ do
       allCharsDifferent "xyzz" `shouldBe` False
     it "4" $
       allCharsDifferent "aghk" `shouldBe` True
-  describe "Lib.getFourCharsAtIndex" $ do
+  describe "Lib.findPacketMarker" $ do
     it "1" $
-      getFourCharsAtIndex "bvwbjplbgvbhsrlpgdmjqwftvncz" 1 `shouldBe` "vwbj"
+      findPacketMarker "bvwbjplbgvbhsrlpgdmjqwftvncz" `shouldBe` 5
     it "2" $
-      getFourCharsAtIndex "nppdvjthqldpwncqszvftbrmjlhg" 2 `shouldBe` "pdvj"
-  describe "Lib.findFirstMarker" $ do
-    it "1" $
-      findFirstMarker "bvwbjplbgvbhsrlpgdmjqwftvncz" `shouldBe` 5
-    it "2" $
-      findFirstMarker "nppdvjthqldpwncqszvftbrmjlhg" `shouldBe` 6
+      findPacketMarker "nppdvjthqldpwncqszvftbrmjlhg" `shouldBe` 6
     it "3" $
-      findFirstMarker "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" `shouldBe` 10
+      findPacketMarker "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" `shouldBe` 10
     it "4" $
-      findFirstMarker "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" `shouldBe` 11
+      findPacketMarker "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" `shouldBe` 11
+  describe "Lib.findStartOfMessageMarker" $ do
+    it "1" $
+      findStartOfMessageMarker "mjqjpqmgbljsphdztnvjfqwrcgsmlb" `shouldBe` 19
+    it "2" $
+      findStartOfMessageMarker "bvwbjplbgvbhsrlpgdmjqwftvncz" `shouldBe` 23
+    it "3" $
+      findStartOfMessageMarker "nppdvjthqldpwncqszvftbrmjlhg" `shouldBe` 23
+    it "4" $
+      findStartOfMessageMarker "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" `shouldBe` 29
+    it "5" $
+      findStartOfMessageMarker "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" `shouldBe` 26
