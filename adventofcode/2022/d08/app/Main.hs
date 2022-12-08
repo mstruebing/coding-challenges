@@ -13,4 +13,4 @@ part1 :: IO ()
 part1 = print . Lib.treesVisibleFromOutside . Lib.constructMap . lines =<< readFile "input.txt"
 
 part2 :: IO ()
-part2 = print 1
+part2 = print . Lib.highestScenicScore . Lib.constructMap . lines =<< readFile "input.txt"
