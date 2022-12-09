@@ -9,6 +9,7 @@ module Lib
     constructFileSystem,
     smallDirectoriesSum,
     sample,
+    directoryToBeDeleted,
   )
 where
 
@@ -31,8 +32,20 @@ data Command
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
 
+fsSize :: Int
+fsSize = 70000000
+
+neededSize :: Int
+neededSize = 30000000
+
 smallDirectoriesSum :: Map.Map [String] Int -> Int
 smallDirectoriesSum fs = sum $ map snd $ filter (\(_, size) -> size <= 100000) (Map.assocs fs)
+
+directoryToBeDeleted :: Map.Map [String] Int -> Int
+directoryToBeDeleted fs = minimum $ filter (> neededSpace) $ map snd $ Map.assocs fs
+  where
+    neededSpace = neededSize - (fsSize - usedSpace)
+    usedSpace = Map.findWithDefault 0 ["/"] fs
 
 -- Create Filesystem
 

@@ -71,3 +71,6 @@ main = hspec $ do
   describe "Lib.smallDirectoriesSum" $ do
     it "1" $
       smallDirectoriesSum (constructFileSystem (parse sample)) `shouldBe` 95437
+  describe "Lib.directoryToBeDeleted" $ do
+    it "1" $
+      directoryToBeDeleted (constructFileSystem (parse sample)) `shouldBe` 24933642
