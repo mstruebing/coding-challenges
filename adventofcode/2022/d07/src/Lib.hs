@@ -8,10 +8,11 @@ module Lib
     Instruction (..),
     constructFileSystem,
     smallDirectoriesSum,
+    sample,
   )
 where
 
-import Data.List (foldl', isInfixOf)
+import Data.List (foldl')
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes, fromJust, isJust)
 import Text.Read (readMaybe)
@@ -30,12 +31,12 @@ data Command
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
 
-smallDirectoriesSum :: [(String, Int)] -> Int
-smallDirectoriesSum fs = sum $ map snd $ filter (\(_, size) -> size <= 100000) fs
+smallDirectoriesSum :: Map.Map [String] Int -> Int
+smallDirectoriesSum fs = sum $ map snd $ filter (\(_, size) -> size <= 100000) (Map.assocs fs)
 
 -- Create Filesystem
 
-constructFileSystem :: [Instruction] -> [(String, Int)]
+constructFileSystem :: [Instruction] -> Map.Map [String] Int
 constructFileSystem instructions =
   augmentSubFolderSizes $
     snd $
@@ -46,18 +47,19 @@ constructFileSystem instructions =
             Command (ChangeDirectory dir) ->
               case dir of
                 ".." ->
-                  (reverse $ dropWhile (/= '/') $ tail $ reverse currentPath, fs)
-                "/" -> ("/", fs)
-                _ -> (currentPath ++ dir ++ "/", fs)
+                  (init currentPath, fs)
+                "/" -> (["/"], fs)
+                _ -> (currentPath ++ [dir], fs)
             _ -> (currentPath, fs)
         )
-        ("/", Map.empty)
+        (["/"], Map.singleton ["/"] 0)
         (tail instructions)
 
-augmentSubFolderSizes :: Map.Map String Int -> [(String, Int)]
-augmentSubFolderSizes fs = map (\(path, size) -> (path, size + (sum $ map (\(_, s) -> s) (matchingPaths path)))) $ Map.assocs fs
+augmentSubFolderSizes :: Map.Map [String] Int -> Map.Map [String] Int
+augmentSubFolderSizes fs = foldr (\(path, size) fss -> Map.union (foldl' (\acc index -> Map.insert (remove index path) (currentSize (remove index path) fss + size) acc) fss [1 .. length path - 1]) fss) fs $ Map.assocs fs
   where
-    matchingPaths path = filter (\(p, _) -> isInfixOf path p && path /= p) $ Map.assocs fs
+    currentSize path fss = Map.findWithDefault 0 path fss
+    remove i p = reverse $ drop i $ reverse p
 
 -- Parsing
 
@@ -98,3 +100,30 @@ getUntilSpace = takeWhile (/= ' ')
 
 getAfterSpace :: String -> String
 getAfterSpace = tail . dropWhile (/= ' ')
+
+sample :: [String]
+sample =
+  [ "$ cd /",
+    "$ ls",
+    "dir a",
+    "14848514 b.txt",
+    "8504156 c.dat",
+    "dir d",
+    "$ cd a",
+    "$ ls",
+    "dir e",
+    "29116 f",
+    "2557 g",
+    "62596 h.lst",
+    "$ cd e",
+    "$ ls",
+    "584 i",
+    "$ cd ..",
+    "$ cd ..",
+    "$ cd d",
+    "$ ls",
+    "4060174 j",
+    "8033020 d.log",
+    "5626152 d.ext",
+    "7214296 k"
+  ]
