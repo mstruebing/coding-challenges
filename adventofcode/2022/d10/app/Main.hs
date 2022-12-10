@@ -13,4 +13,4 @@ part1 :: IO ()
 part1 = print . Lib.sumOfSignals . Lib.execute . Lib.parse . lines =<< readFile "input.txt"
 
 part2 :: IO ()
-part2 = print "2"
+part2 = print . Lib.createCRT . Lib.execute . Lib.parse . lines =<< readFile "input.txt"

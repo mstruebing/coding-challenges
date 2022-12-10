@@ -8,10 +8,13 @@ module Lib
     sumOfSignals,
     addCycles,
     Instruction (..),
+    createCRT,
+    shouldDraw,
   )
 where
 
 import Data.List (foldl')
+import Data.Matrix (Matrix, fromList)
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
@@ -31,14 +34,22 @@ data Instruction = NoOp | AddX !Int
 sumOfSignals :: State -> Int
 sumOfSignals state = sum $ map (\i -> (state !! (i - 1)) * i) interestingCycles
 
+createCRT :: State -> Matrix Char
+createCRT state = fromList 6 40 $ map (\i -> if shouldDraw (state !! i) (mod i 40) then '#' else '.') [0 .. length state -1]
+
+shouldDraw :: Int -> Int -> Bool
+shouldDraw register crtPos = crtPos `elem` [register -1, register, register + 1]
+
 execute :: [Instruction] -> State
 execute = foldl' addCycles initialState
 
 addCycles :: State -> Instruction -> State
 addCycles state instruction =
   case instruction of
-    NoOp -> state ++ replicate (cycles instruction) (last state)
-    AddX amount -> state ++ replicate (cycles instruction - 1) (last state) ++ [last state + amount]
+    NoOp -> state ++ [lastState]
+    AddX amount -> state ++ [lastState] ++ [lastState + amount]
+  where
+    lastState = last state
 
 cycles :: Instruction -> Int
 cycles instruction = case instruction of
