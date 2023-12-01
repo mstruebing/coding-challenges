@@ -4,6 +4,7 @@ import Control.Monad ()
 import Data.Foldable ()
 import qualified Data.Map as Map
 import qualified DayXX (solve)
+import qualified Day01 (solve)
 import System.Environment
 import System.Exit ()
 
@@ -11,6 +12,7 @@ solutions :: Map.Map String (String -> IO ())
 solutions =
   Map.fromList
     [ ("xx", DayXX.solve)
+    , ("01", Day01.solve)
     ]
 
 solveSingle :: String -> IO ()
