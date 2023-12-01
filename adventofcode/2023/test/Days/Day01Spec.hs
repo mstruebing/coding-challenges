@@ -21,4 +21,18 @@ spec = do
     it "getCalibrationValue example 4" $
       getCalibrationValue "treb7uchet" `shouldBe` 77
     it "part 1 example" $ 
-        part1 input `shouldBe` "142"
+      part1 input `shouldBe` "142"
+    it "getCalibrationValueEnhanced example 1" $
+      getCalibrationValueEnhanced "two1nine" `shouldBe` 29
+    it "getCalibrationValueEnhanced example 2" $
+      getCalibrationValueEnhanced "eightwothree" `shouldBe` 83
+    it "getCalibrationValueEnhanced example 3" $
+      getCalibrationValueEnhanced "abcone2threexyz" `shouldBe` 13
+    it "getCalibrationValueEnhanced example 4" $
+      getCalibrationValueEnhanced "xtwone3four" `shouldBe` 24
+    it "getCalibrationValueEnhanced example 5" $
+      getCalibrationValueEnhanced "4nineeightseven2" `shouldBe` 42
+    it "getCalibrationValueEnhanced example 6" $
+      getCalibrationValueEnhanced "zoneight234" `shouldBe` 14
+    it "getCalibrationValueEnhanced example 7" $
+      getCalibrationValueEnhanced "7pqrstsixteen" `shouldBe` 76
