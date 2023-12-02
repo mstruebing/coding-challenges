@@ -5,6 +5,7 @@ import Data.Foldable ()
 import qualified Data.Map as Map
 import qualified DayXX (solve)
 import qualified Day01 (solve)
+import qualified Day02 (solve)
 import System.Environment
 import System.Exit ()
 
@@ -13,6 +14,7 @@ solutions =
   Map.fromList
     [ ("xx", DayXX.solve)
     , ("01", Day01.solve)
+    , ("02", Day02.solve)
     ]
 
 solveSingle :: String -> IO ()
