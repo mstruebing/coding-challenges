@@ -1,6 +1,5 @@
 module Day02 (solve, part1, part2, parseGame) where
 import Data.Char (isDigit)
-import Numeric (readInt)
 import Data.List.Split (splitOn)
 import Data.List (isInfixOf, find)
 
@@ -31,7 +30,9 @@ part1 :: String -> String
 part1 input = show $ foldl (\acc curr -> if possible (snd curr) then acc + fst curr else acc) 0 (parse input)
 
 part2 :: String -> String
-part2 _ = "Not implemented"
+part2 input = show $ foldl (\acc curr -> acc + multiply (snd curr)) 0 (parse input)
+    where
+        multiply (r,g,b) = r*g*b
 
 -- part 1
 

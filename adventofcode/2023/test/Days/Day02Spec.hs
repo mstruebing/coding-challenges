@@ -32,3 +32,5 @@ spec = do
       parseGame "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green" `shouldBe` (5, (6, 3, 2))
     it "part 1" $
       part1 input `shouldBe` "8"
+    it "part 2" $
+      part2 input `shouldBe` "2286"
