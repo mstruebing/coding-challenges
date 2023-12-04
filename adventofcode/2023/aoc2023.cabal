@@ -27,6 +27,8 @@ library
   exposed-modules:
       Day01
       Day02
+      Day03
+      Day04
       DayXX
   other-modules:
       Paths_aoc2023
@@ -63,6 +65,8 @@ test-suite aoc2023-test
   other-modules:
       Days.Day01Spec
       Days.Day02Spec
+      Days.Day03Spec
+      Days.Day04Spec
       Days.DayXXSpec
       Paths_aoc2023
   autogen-modules:
