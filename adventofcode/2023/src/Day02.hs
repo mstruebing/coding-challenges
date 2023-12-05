@@ -4,7 +4,7 @@ import Data.List.Split (splitOn)
 import Data.List (isInfixOf, find)
 
 solve :: String -> IO ()
-solve input = putStrLn "--- Day XX ---" >> putStrLn (part1 input) >> putStrLn (part2 input)
+solve input = putStrLn "--- Day 02 ---" >> putStrLn (part1 input) >> putStrLn (part2 input)
 
 -- Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 -- Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue

@@ -16,3 +16,5 @@ spec = do
   describe "Day04" $ do
     it "Shoud calculate the correct result for the example" $
       part1 input `shouldBe` "13"
+    it "Shoud calculate the correct result for the example part 2" $
+      part2 input `shouldBe` "30"
