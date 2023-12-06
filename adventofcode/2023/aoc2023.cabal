@@ -29,6 +29,7 @@ library
       Day02
       Day03
       Day04
+      Day06
       DayXX
   other-modules:
       Paths_aoc2023
@@ -67,6 +68,7 @@ test-suite aoc2023-test
       Days.Day02Spec
       Days.Day03Spec
       Days.Day04Spec
+      Days.Day06Spec
       Days.DayXXSpec
       Paths_aoc2023
   autogen-modules:
