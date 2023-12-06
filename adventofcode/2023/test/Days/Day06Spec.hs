@@ -12,3 +12,5 @@ spec = do
   describe "Day06" $ do
     it "Should run the example for part 1" $
       part1 sample `shouldBe` "288"
+    it "Should run the example for part 2" $
+      part2 sample `shouldBe` "71503"

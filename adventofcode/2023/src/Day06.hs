@@ -10,17 +10,20 @@ part1 :: String -> String
 part1 input = show $ product $ map winningCombination $ parse input
 
 part2 :: String -> String
-part2 _ = "Not implemented"
+part2 input = show $ winningCombination $ parsePart2 input
 
 -- (Time, Distance)
 type Race = (Int, Int)
 type Races = [Race]
 
+-- part 1
+
 winningCombination :: Race -> Int
 winningCombination (time, distance) =  highest - lowest + 1
     where
-        lowest = head [seconds | seconds <- [1..time], seconds * (time - seconds) > distance]
-        highest = head [seconds | seconds <- reverse [1..time], seconds * (time - seconds) > distance]
+        lowest = head [seconds | seconds <- [1..time], isWinning seconds]
+        highest = head [seconds | seconds <- reverse [lowest..time], isWinning seconds]
+        isWinning seconds = seconds * (time - seconds) > distance
 
 parse :: String -> Races
 parse input = zip times distances
@@ -29,3 +32,11 @@ parse input = zip times distances
         distances = parseLine $ head $ tail $ lines input
         parseLine = map read . filter (/= "") . splitOn " " . dropWhile (not . isDigit)
 
+-- part 2
+
+parsePart2 :: String -> Race
+parsePart2 input = (time, distance) 
+    where
+        time = parseLine $ head $ lines input
+        distance = parseLine $ head $ tail $ lines input
+        parseLine = read . filter isDigit
