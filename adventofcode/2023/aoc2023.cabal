@@ -29,6 +29,7 @@ library
       Day02
       Day03
       Day04
+      Day05
       Day06
       Day08
       Day15
@@ -70,6 +71,7 @@ test-suite aoc2023-test
       Days.Day02Spec
       Days.Day03Spec
       Days.Day04Spec
+      Days.Day05Spec
       Days.Day06Spec
       Days.Day08Spec
       Days.Day15Spec
