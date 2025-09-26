@@ -1,0 +1,45 @@
+{
+  "name": "aoc-effect",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "description": "An Effect Advent of Code Template CLI",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mstruebing/aoc-effect"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist/*",
+    "check": "tsc -b tsconfig.json",
+    "lint": "eslint \"**/{src,test}/**/*.{ts,mjs}\"",
+    "lint-fix": "pnpm lint --fix",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@effect/cli": "^0.70.0",
+    "@effect/eslint-plugin": "^0.3.2",
+    "@effect/language-service": "latest",
+    "@effect/platform": "^0.91.1",
+    "@effect/platform-node": "^0.97.1",
+    "@effect/vitest": "^0.25.1",
+    "@eslint/compat": "1.4.0",
+    "@eslint/eslintrc": "3.3.1",
+    "@eslint/js": "9.36.0",
+    "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "effect": "^3.17.14",
+    "eslint": "^9.36.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-codegen": "0.34.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
