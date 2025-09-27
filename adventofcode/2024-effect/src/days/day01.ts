@@ -6,14 +6,6 @@ type Location = Schema.Schema.Type<typeof Location>
 const LocationList = Schema.Array(Location)
 type LocationList = Schema.Schema.Type<typeof LocationList>
 
-export const run = (input: string) =>
-  Effect.gen(function* () {
-    const solution1 = yield* Effect.runFork(part1(input))
-    console.log("Part 1:", solution1)
-    const solution2 = yield* Effect.runFork(part2(input))
-    console.log("Part 2:", solution2)
-  })
-
 export const part1 = (input: string): Effect.Effect<number, string> => {
   return Effect.map(parseInput(input), (locations) => {
     const leftLocations = locations.map(([x, _]) => x).sort()

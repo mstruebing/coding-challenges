@@ -3,7 +3,7 @@
 import { Command, FileSystem } from "@effect/platform"
 import { NodeContext, NodeRuntime } from "@effect/platform-node"
 import Commander from "commander"
-import { Effect, pipe } from "effect"
+import { Duration, Effect, pipe } from "effect"
 
 // TODO: Use @effect/cli
 const program = new Commander.Command()
@@ -91,9 +91,19 @@ const cliApp = Effect.gen(function* () {
   }
 
   const input = yield* fs.readFile(`inputs/day${day}.txt`)
-
   const program = yield* Effect.tryPromise(() => import(`./days/day${day}.ts`))
-  yield* Effect.runFork(program.run(input.toString()))
+
+  const task1 = Effect.runFork(program.part1(input.toString())).pipe(
+    Effect.timed
+  )
+  const [part1Duration, part1Solution] = yield* task1
+  console.log(`part 1: ${part1Solution} (${Duration.format(part1Duration)})`)
+
+  const task2 = Effect.runFork(program.part2(input.toString())).pipe(
+    Effect.timed
+  )
+  const [part2Duration, part2Solution] = yield* task2
+  console.log(`part 2: ${part2Solution} (${Duration.format(part2Duration)})`)
 })
 
 NodeRuntime.runMain(
