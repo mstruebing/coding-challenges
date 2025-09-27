@@ -39,8 +39,7 @@ describe("day02", () => {
   describe("part2", () => {
     it("should return the correct result for sample input", async () => {
       const result = Effect.runSync(part2(SAMPLE_INPUT))
-
-      expect(result).toBe(undefined)
+      expect(result).toBe(4)
     })
   })
 

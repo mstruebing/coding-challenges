@@ -16,17 +16,28 @@ export const run = (input: string) =>
 
 export const part1 = (input: string): Effect.Effect<void, string> => {
   return Effect.map(parseInput(input), (reports) => {
-    return reports.filter(
-      (report) =>
-        (allDecreasing(report) || allIncreasing(report)) &&
-        isValidDifference(report)
-    ).length
+    return reports.filter(isReportSave).length
   })
 }
 
-export const part2 = (_input: string): Effect.Effect<void, string> => {
-  return Effect.succeed(undefined)
+export const part2 = (input: string): Effect.Effect<void, string> => {
+  return Effect.map(parseInput(input), (reports) => {
+    return reports.filter(isReportSaveWithRemoval).length
+  })
 }
+
+const isReportSaveWithRemoval = (report: Report) => {
+  for (let i = 0; i < report.length; i++) {
+    const newReport = [...report.slice(0, i), ...report.slice(i + 1)]
+    if (isReportSave(newReport)) {
+      return true
+    }
+  }
+  return false
+}
+
+const isReportSave = (report: Report) =>
+  (allDecreasing(report) || allIncreasing(report)) && isValidDifference(report)
 
 export const allDecreasing = (report: Report) =>
   report.every((num, i, arr) => (i === 0 ? true : num < arr[i - 1]))
