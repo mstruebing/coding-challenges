@@ -25,7 +25,7 @@ export default [
   ...compat.extends(
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended"
   ),
   ...effectEslint.configs.dprint,
   {
@@ -65,7 +65,8 @@ export default [
       "no-restricted-syntax": [
         "error",
         {
-          selector: "CallExpression[callee.property.name='push'] > SpreadElement.arguments",
+          selector:
+            "CallExpression[callee.property.name='push'] > SpreadElement.arguments",
           message: "Do not use spread arguments in Array.push"
         }
       ],
