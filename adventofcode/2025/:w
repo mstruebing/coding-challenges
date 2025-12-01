@@ -1,0 +1,88 @@
+use nom::{character::complete::line_ending, multi::separated_list1, sequence::tuple, IResult};
+
+use crate::days::Day;
+
+pub struct Day01;
+
+type Move = u16;
+
+impl Day for Day01 {
+    type Input = Vec<Move>;
+
+    fn parse(input: &str) -> IResult<&str, Self::Input> {
+        separated_list1(line_ending, parse_line)(input)
+    }
+
+    type Output1 = String;
+
+    fn part_1(input: &Self::Input) -> Self::Output1 {
+        let mut zeros = 0;
+        let mut new_pos = 50;
+
+        input.into_iter().for_each(|m| {
+            match m.direction {
+                Direction::Left => {
+                    new_pos = (new_pos - m.distance).rem_euclid(100);
+                }
+                Direction::Right => {
+                    new_pos = (new_pos + m.distance).rem_euclid(100);
+                }
+            }
+
+            if new_pos == 0 {
+                zeros += 1;
+            }
+        });
+
+        zeros.to_string()
+    }
+
+    type Output2 = String;
+
+    fn part_2(input: &Self::Input) -> Self::Output2 {
+        let mut zeros = 0;
+        let mut new_pos = 50;
+
+        input.into_iter().for_each(|m| {
+            match m.direction {
+                Direction::Left => {
+                    new_pos = (new_pos - m.distance).rem_euclid(100);
+                }
+                Direction::Right => {
+                    let remainder = new_pos + m.distance % 100;
+                    let additional_zeros = (remainder - 1) / 100 as i16;
+                    zeros += additional_zeros;
+                    new_pos = (new_pos + m.distance).rem_euclid(100);
+                }
+            }
+
+            if new_pos == 0 {
+                zeros += 1;
+            }
+        });
+
+        zeros.to_string()
+    }
+}
+
+fn parse_line(line: &str) -> IResult<&str, Move> {
+    let (rest, (dir_char, dist_str)) = tuple((
+        nom::character::complete::one_of("LR"),
+        nom::character::complete::digit1,
+    ))(line)?;
+
+    let distance = dist_str.parse::<i16>().map_err(|_| {
+        nom::Err::Error(nom::error::Error::new(
+            dist_str,
+            nom::error::ErrorKind::Digit,
+        ))
+    })?;
+
+    let value = match dir_char {
+        'L' => -distance,
+        'R' => distance,
+        _ => unreachable!(),
+    };
+
+    Ok((rest, value))
+}
